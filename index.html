@@ -7,6 +7,15 @@
   <meta name="description" content="Trouvez des entrepreneurs et architectes certifiés partout au Québec. Déposez votre projet, comparez, rénovez en confiance." />
   <link rel="canonical" href="https://renoconfiance.com/" />
 
+  <!-- Progressive Web App (rend le site installable sur téléphone) -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#16263B" />
+  <link rel="icon" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Réno-Confiance" />
+
   <!-- Réseaux sociaux (Facebook, LinkedIn, etc.) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Réno-Confiance" />
@@ -54,5 +63,12 @@
 <body>
   <div id="root"></div>
   <script type="module" src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
