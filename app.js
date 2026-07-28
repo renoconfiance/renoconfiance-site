@@ -29,7 +29,9 @@ import {
   MessageSquare,
   Users,
   Inbox,
-  Plus
+  Plus,
+  Menu,
+  X
 } from "https://esm.sh/lucide-react@0.383.0?deps=react@18.3.1";
 const FONT_IMPORT = `
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -154,7 +156,7 @@ function Logo({ light, size = 36 }) {
   ));
 }
 function DashSidebar({ items, onSignOut }) {
-  return /* @__PURE__ */ React.createElement("aside", { style: { background: COLORS.navy }, className: "rounded-lg p-3 flex md:flex-col gap-1 h-fit" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2.5 px-2 pb-3 mb-1 border-b border-white/10" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 26 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-xs font-semibold" }, "R\xC9NO-CONFIANCE")), items.map((it) => /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("aside", { style: { background: COLORS.navy }, className: "rounded-lg p-3 flex flex-wrap md:flex-col gap-1 h-fit" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2.5 px-2 pb-3 mb-1 border-b border-white/10" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 26 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-xs font-semibold" }, "R\xC9NO-CONFIANCE")), items.map((it) => /* @__PURE__ */ React.createElement(
     "button",
     {
       key: it.label,
@@ -1242,7 +1244,7 @@ function EspaceProView() {
       className: "text-xs underline block mx-auto"
     },
     authMode === "login" ? "Pas encore de compte ? Cr\xE9er un mot de passe" : "D\xE9j\xE0 un compte ? Se connecter"
-  ))), session && profLoading && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "Chargement de ton profil\u2026"), session && !profLoading && !professional && /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 max-w-md mx-auto text-center" }, /* @__PURE__ */ React.createElement(Lock, { size: 24, style: { color: COLORS.orange }, className: "mx-auto mb-3" }), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-base font-medium mb-1.5" }, "Aucune candidature associ\xE9e"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "D\xE9pose d'abord ta candidature dans l'onglet \xAB Devenir partenaire \xBB avec ce m\xEAme courriel.")), session && professional && professional.statut !== "qualifie" && /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm p-8 max-w-md mx-auto text-center" }, /* @__PURE__ */ React.createElement(ClipboardCheck, { size: 24, style: { color: "#8A6116" }, className: "mx-auto mb-3" }), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: "#8A6116" }, className: "text-base font-medium mb-1.5" }, "Candidature en \xE9valuation"), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-sm" }, "Ton dossier sera examin\xE9 personnellement avant de te donner acc\xE8s aux projets.")), session && professional && professional.statut === "qualifie" && /* @__PURE__ */ React.createElement("div", { className: "grid md:grid-cols-[220px_1fr] gap-6" }, /* @__PURE__ */ React.createElement("aside", { style: { background: COLORS.navy }, className: "rounded-lg p-3 flex md:flex-col gap-1 h-fit" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2.5 px-2 pb-3 mb-1 border-b border-white/10" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 26 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-xs font-semibold" }, "R\xC9NO-CONFIANCE")), [
+  ))), session && profLoading && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "Chargement de ton profil\u2026"), session && !profLoading && !professional && /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 max-w-md mx-auto text-center" }, /* @__PURE__ */ React.createElement(Lock, { size: 24, style: { color: COLORS.orange }, className: "mx-auto mb-3" }), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-base font-medium mb-1.5" }, "Aucune candidature associ\xE9e"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "D\xE9pose d'abord ta candidature dans l'onglet \xAB Devenir partenaire \xBB avec ce m\xEAme courriel.")), session && professional && professional.statut !== "qualifie" && /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm p-8 max-w-md mx-auto text-center" }, /* @__PURE__ */ React.createElement(ClipboardCheck, { size: 24, style: { color: "#8A6116" }, className: "mx-auto mb-3" }), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: "#8A6116" }, className: "text-base font-medium mb-1.5" }, "Candidature en \xE9valuation"), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-sm" }, "Ton dossier sera examin\xE9 personnellement avant de te donner acc\xE8s aux projets.")), session && professional && professional.statut === "qualifie" && /* @__PURE__ */ React.createElement("div", { className: "grid md:grid-cols-[220px_1fr] gap-6" }, /* @__PURE__ */ React.createElement("aside", { style: { background: COLORS.navy }, className: "rounded-lg p-3 flex flex-wrap md:flex-col gap-1 h-fit" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2.5 px-2 pb-3 mb-1 border-b border-white/10" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 26 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-xs font-semibold" }, "R\xC9NO-CONFIANCE")), [
     { icon: LayoutDashboard, label: "Tableau de bord", active: true },
     { icon: ClipboardList, label: "Projets disponibles" },
     { icon: Coins, label: "Mes cr\xE9dits" },
@@ -1790,6 +1792,7 @@ function InsurersView() {
 function App() {
   const [tab, setTab] = useState("home");
   const [loginMenuOpen, setLoginMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navLinks = [
     { id: "home", label: "Accueil" },
     { id: "certification", label: "Comment \xE7a fonctionne" },
@@ -1801,8 +1804,9 @@ function App() {
   const goToAndClose = (id) => {
     setTab(id);
     setLoginMenuOpen(false);
+    setMobileMenuOpen(false);
   };
-  return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'IBM Plex Sans', sans-serif" }, className: "w-full min-h-full" }, /* @__PURE__ */ React.createElement("style", null, FONT_IMPORT), /* @__PURE__ */ React.createElement("header", { className: "px-6 md:px-14 py-4 flex items-center justify-between flex-wrap gap-4 border-b", style: { borderColor: COLORS.paperDark } }, /* @__PURE__ */ React.createElement("div", { onClick: () => goToAndClose("home"), className: "cursor-pointer" }, /* @__PURE__ */ React.createElement(Logo, null)), /* @__PURE__ */ React.createElement("nav", { className: "flex flex-wrap" }, navLinks.map((t) => /* @__PURE__ */ React.createElement(NavTab, { key: t.id, label: t.label, active: tab === t.id, onClick: () => goToAndClose(t.id) }))), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3 relative" }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'IBM Plex Sans', sans-serif" }, className: "w-full min-h-full" }, /* @__PURE__ */ React.createElement("style", null, FONT_IMPORT), /* @__PURE__ */ React.createElement("header", { className: "px-6 md:px-14 py-4 flex items-center justify-between gap-4 border-b relative", style: { borderColor: COLORS.paperDark } }, /* @__PURE__ */ React.createElement("div", { onClick: () => goToAndClose("home"), className: "cursor-pointer" }, /* @__PURE__ */ React.createElement(Logo, null)), /* @__PURE__ */ React.createElement("nav", { className: "hidden md:flex flex-wrap" }, navLinks.map((t) => /* @__PURE__ */ React.createElement(NavTab, { key: t.id, label: t.label, active: tab === t.id, onClick: () => goToAndClose(t.id) }))), /* @__PURE__ */ React.createElement("div", { className: "hidden md:flex items-center gap-3 relative" }, /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => setLoginMenuOpen((o) => !o),
@@ -1854,7 +1858,72 @@ function App() {
       /* @__PURE__ */ React.createElement(Lock, { size: 14 }),
       " Administration"
     )
-  ))), tab === "home" && /* @__PURE__ */ React.createElement(HomeView, { goTo: setTab }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitView, null), tab === "contractors" && /* @__PURE__ */ React.createElement(ContractorsView, null), tab === "architects" && /* @__PURE__ */ React.createElement(ArchitectsView, null), tab === "trust" && /* @__PURE__ */ React.createElement(TrustNetworkView, null), tab === "showcase" && /* @__PURE__ */ React.createElement(ShowcaseView, null), tab === "certification" && /* @__PURE__ */ React.createElement(CertificationView, null), tab === "join" && /* @__PURE__ */ React.createElement(JoinView, { goTo: setTab }), tab === "espacepro" && /* @__PURE__ */ React.createElement(EspaceProView, null), tab === "insurers" && /* @__PURE__ */ React.createElement(InsurersView, null), tab === "clientdash" && /* @__PURE__ */ React.createElement(ClientDashboardView, null), tab === "admin" && /* @__PURE__ */ React.createElement(AdminDashboardView, null), tab === "faq" && /* @__PURE__ */ React.createElement(FaqView, null), tab === "booking" && /* @__PURE__ */ React.createElement(BookingView, null), /* @__PURE__ */ React.createElement("section", { style: { background: COLORS.navy }, className: "px-6 md:px-14 py-10 flex flex-wrap items-center justify-between gap-6" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-lg font-semibold" }, "Une question ? Parlons-en directement."), /* @__PURE__ */ React.createElement("p", { className: "text-white/60 text-sm mt-1" }, "R\xE9serve un appel rapide avec nous, sans engagement.")), /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setMobileMenuOpen((o) => !o),
+      className: "md:hidden p-2 -mr-2",
+      style: { color: COLORS.navy }
+    },
+    mobileMenuOpen ? /* @__PURE__ */ React.createElement(X, { size: 22 }) : /* @__PURE__ */ React.createElement(Menu, { size: 22 })
+  ), mobileMenuOpen && /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: { background: "#fff", borderColor: COLORS.paperDark, top: "100%" },
+      className: "md:hidden absolute left-0 right-0 border-t shadow-lg z-20 px-6 py-4"
+    },
+    /* @__PURE__ */ React.createElement("nav", { className: "flex flex-col gap-1 mb-4" }, navLinks.map((t) => /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: t.id,
+        onClick: () => goToAndClose(t.id),
+        style: {
+          fontFamily: "'Poppins', sans-serif",
+          color: tab === t.id ? COLORS.navy : COLORS.steel,
+          background: tab === t.id ? "#F7F8FA" : "transparent"
+        },
+        className: "text-left px-3 py-2.5 rounded-md text-sm font-medium"
+      },
+      t.label
+    ))),
+    /* @__PURE__ */ React.createElement("div", { className: "flex flex-col gap-2 mb-4 pt-3 border-t", style: { borderColor: COLORS.paperDark } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => goToAndClose("clientdash"),
+        style: { color: COLORS.navy, fontFamily: "'Poppins', sans-serif" },
+        className: "text-left px-3 py-2 text-sm flex items-center gap-2"
+      },
+      /* @__PURE__ */ React.createElement(UserCircle, { size: 14 }),
+      " Je suis client"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => goToAndClose("espacepro"),
+        style: { color: COLORS.navy, fontFamily: "'Poppins', sans-serif" },
+        className: "text-left px-3 py-2 text-sm flex items-center gap-2"
+      },
+      /* @__PURE__ */ React.createElement(HardHat, { size: 14 }),
+      " Je suis un professionnel"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => goToAndClose("admin"),
+        style: { color: COLORS.steel, fontFamily: "'Poppins', sans-serif" },
+        className: "text-left px-3 py-2 text-sm flex items-center gap-2"
+      },
+      /* @__PURE__ */ React.createElement(Lock, { size: 14 }),
+      " Administration"
+    )),
+    /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => goToAndClose("join"),
+        style: { background: COLORS.orange, color: COLORS.navy, fontFamily: "'Poppins', sans-serif" },
+        className: "w-full px-4 py-2.5 rounded-md text-sm font-semibold"
+      },
+      "S'inscrire"
+    )
+  )), tab === "home" && /* @__PURE__ */ React.createElement(HomeView, { goTo: setTab }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitView, null), tab === "contractors" && /* @__PURE__ */ React.createElement(ContractorsView, null), tab === "architects" && /* @__PURE__ */ React.createElement(ArchitectsView, null), tab === "trust" && /* @__PURE__ */ React.createElement(TrustNetworkView, null), tab === "showcase" && /* @__PURE__ */ React.createElement(ShowcaseView, null), tab === "certification" && /* @__PURE__ */ React.createElement(CertificationView, null), tab === "join" && /* @__PURE__ */ React.createElement(JoinView, { goTo: setTab }), tab === "espacepro" && /* @__PURE__ */ React.createElement(EspaceProView, null), tab === "insurers" && /* @__PURE__ */ React.createElement(InsurersView, null), tab === "clientdash" && /* @__PURE__ */ React.createElement(ClientDashboardView, null), tab === "admin" && /* @__PURE__ */ React.createElement(AdminDashboardView, null), tab === "faq" && /* @__PURE__ */ React.createElement(FaqView, null), tab === "booking" && /* @__PURE__ */ React.createElement(BookingView, null), /* @__PURE__ */ React.createElement("section", { style: { background: COLORS.navy }, className: "px-6 md:px-14 py-10 flex flex-wrap items-center justify-between gap-6" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-lg font-semibold" }, "Une question ? Parlons-en directement."), /* @__PURE__ */ React.createElement("p", { className: "text-white/60 text-sm mt-1" }, "R\xE9serve un appel rapide avec nous, sans engagement.")), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => goToAndClose("booking"),
