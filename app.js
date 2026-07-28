@@ -38,9 +38,9 @@ const FONT_IMPORT = `
 `;
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjgnawgk";
 const STRIPE_LINKS = {
-  D\u00E9part: "https://buy.stripe.com/test_8x27sK1C80CyfWl3EV4gg00",
-  Pro: "https://buy.stripe.com/test_28E00igx270W9xXcbr4gg01",
-  Expert: "https://buy.stripe.com/test_bJe7sKfsYclg39zcbr4gg02"
+  D\u00E9part: "https://buy.stripe.com/14A9AV2yFckz0Kcb2KeEo03",
+  Pro: "https://buy.stripe.com/28E5kF8X3esHeB20o6eEo04",
+  Expert: "https://buy.stripe.com/4gMdRb4GN3O33Wo0o6eEo05"
 };
 const SUPABASE_URL = "https://oyvkvdmasrkvupgfnfgu.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im95dmt2ZG1hc3JrdnVwZ2ZuZmd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NTMyOTcsImV4cCI6MjEwMDUyOTI5N30.LueamYkzVUpW0CjDIYt7Qltvw0jjbcmYWR91U7C-YW4";
@@ -245,7 +245,7 @@ function StatBlock({ number, label, icon: Icon }) {
   ), /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.steel }, className: "text-sm" }, label)));
 }
 function HomeView({ goTo }) {
-  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("section", { className: "px-6 md:px-14 py-16 grid md:grid-cols-2 gap-10 items-center max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2 mb-5" }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("section", { className: "px-6 md:px-14 py-16 grid md:grid-cols-2 gap-10 items-center max-w-6xl mx-auto" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2 mb-5 flex-wrap" }, /* @__PURE__ */ React.createElement(
     "span",
     {
       style: { background: "#F4E3C5", color: "#8A6116", borderColor: "#D9B45F" },
@@ -253,6 +253,14 @@ function HomeView({ goTo }) {
     },
     /* @__PURE__ */ React.createElement(MapPin, { size: 11 }),
     " Actif partout au Qu\xE9bec"
+  ), /* @__PURE__ */ React.createElement(
+    "span",
+    {
+      style: { background: "#DCEEE3", color: "#1F6B45", borderColor: "#9BCFB3" },
+      className: "text-[11px] font-medium px-2.5 py-1 rounded-full border flex items-center gap-1.5"
+    },
+    /* @__PURE__ */ React.createElement(CheckCircle2, { size: 11 }),
+    " 100 % gratuit pour trouver un entrepreneur"
   )), /* @__PURE__ */ React.createElement(
     "h1",
     {
@@ -468,9 +476,9 @@ function SubmitView() {
   return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(
     SectionBand,
     {
-      eyebrow: "Formulaire de d\xE9p\xF4t",
+      eyebrow: "Formulaire de d\xE9p\xF4t \xB7 100 % gratuit",
       title: "D\xE9crivez votre projet",
-      subtitle: "Plus votre description est pr\xE9cise, plus les offres re\xE7ues seront pertinentes."
+      subtitle: "Plus votre description est pr\xE9cise, plus les offres re\xE7ues seront pertinentes. Aucun frais pour d\xE9poser un projet et recevoir des soumissions."
     }
   ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { className: "space-y-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Type de projet"), /* @__PURE__ */ React.createElement(
     "select",
@@ -1007,11 +1015,10 @@ const PLAN_REQUESTS = [
   }
 ];
 const CREDIT_PACKS = [
-  { name: "D\xE9part", credits: 10, price: "50 $", note: "Id\xE9al pour tester la plateforme" },
-  { name: "Pro", credits: 30, price: "125 $", note: "17 % d'\xE9conomie vs D\xE9part", featured: true },
-  { name: "Expert", credits: 75, price: "275 $", note: "27 % d'\xE9conomie vs D\xE9part" }
+  { name: "D\xE9part", credits: 20, price: "60 $", note: "Id\xE9al pour tester la plateforme" },
+  { name: "Pro", credits: 60, price: "150 $", note: "17 % d'\xE9conomie vs D\xE9part", featured: true },
+  { name: "Expert", credits: 150, price: "350 $", note: "22 % d'\xE9conomie vs D\xE9part" }
 ];
-const LEVEL_BID_COST = { Or: 1, Argent: 2, Bronze: 3 };
 const REGIONS_QC = [
   "Abitibi-T\xE9miscamingue",
   "Bas-Saint-Laurent",
@@ -1031,15 +1038,26 @@ const REGIONS_QC = [
   "Outaouais",
   "Saguenay\u2013Lac-Saint-Jean"
 ];
-function budgetMultiplier(budgetStr) {
+const BUDGET_TOKEN_TIERS = [
+  { max: 5e3, jetons: 3 },
+  { max: 1e4, jetons: 5 },
+  { max: 15e3, jetons: 10 },
+  { max: 25e3, jetons: 15 },
+  { max: 5e4, jetons: 25 },
+  { max: 1e5, jetons: 40 },
+  { max: Infinity, jetons: 60 }
+];
+const LEVEL_TOKEN_MULTIPLIER = { Or: 1, Argent: 1.5, Bronze: 2 };
+function budgetToBaseTokens(budgetStr) {
   const numbers = (budgetStr.match(/[\d\s]+(?=\s?\$)/g) || []).map((n) => parseInt(n.replace(/\s/g, ""), 10)).filter((n) => !isNaN(n));
   const max = numbers.length ? Math.max(...numbers) : 0;
-  if (max >= 5e4) return 3;
-  if (max >= 2e4) return 2;
-  return 1;
+  const tier = BUDGET_TOKEN_TIERS.find((t) => max <= t.max);
+  return tier ? tier.jetons : BUDGET_TOKEN_TIERS[BUDGET_TOKEN_TIERS.length - 1].jetons;
 }
 function bidCost(level, budgetStr) {
-  return LEVEL_BID_COST[level] * budgetMultiplier(budgetStr);
+  const base = budgetToBaseTokens(budgetStr);
+  const mult = LEVEL_TOKEN_MULTIPLIER[level] || 1;
+  return Math.ceil(base * mult);
 }
 function JoinView({ goTo }) {
   const [form, setForm] = useState({
@@ -1099,7 +1117,7 @@ function JoinView({ goTo }) {
       title: "Devenir partenaire certifi\xE9",
       subtitle: "Entrepreneur ou architecte : d\xE9pose ta candidature. Chaque dossier est \xE9valu\xE9 personnellement."
     }
-  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, submitted ? /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(ShieldCheck, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, /* @__PURE__ */ React.createElement("strong", null, "Offre de lancement \u2014 Membres fondateurs :"), " les premiers professionnels qualifi\xE9s re\xE7oivent 15 cr\xE9dits gratuits pour commencer \xE0 miser sur des projets, sans premier achat requis.")), submitted ? /* @__PURE__ */ React.createElement(
     "div",
     {
       style: { background: COLORS.card, borderColor: COLORS.paperDark },
@@ -1486,9 +1504,12 @@ function AdminDashboardView() {
     if (error) setAuthError(error.message);
     setAuthLoading(false);
   };
+  const FOUNDING_MEMBER_CREDITS = 15;
   const setProStatut = async (id, statut) => {
     setBusyId(id);
-    await supabase.from("professionals").update({ statut }).eq("id", id);
+    const update = { statut };
+    if (statut === "qualifie") update.credits = FOUNDING_MEMBER_CREDITS;
+    await supabase.from("professionals").update(update).eq("id", id);
     loadData();
     setBusyId(null);
   };
@@ -1700,6 +1721,60 @@ function BookingView() {
       style: { minWidth: "320px", height: "700px" }
     }
   ))));
+}
+function MaterialsView() {
+  const [form, setForm] = useState({ materiaux: "", region: "", ville: "", courriel: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  const inputStyle = "w-full border rounded-sm px-3.5 py-2.5 text-sm outline-none focus:ring-2 transition";
+  const submitMaterials = async () => {
+    setError("");
+    setSending(true);
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ formulaire: "Estimation de mat\xE9riaux", ...form })
+      });
+      if (!res.ok) throw new Error("Envoi refus\xE9");
+      setSubmitted(true);
+    } catch (e) {
+      setError("L'envoi a \xE9chou\xE9, r\xE9essaie dans un instant.");
+    } finally {
+      setSending(false);
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(
+    SectionBand,
+    {
+      eyebrow: "Estimation de mat\xE9riaux",
+      title: "Faites \xE9valuer le prix de vos mat\xE9riaux",
+      subtitle: "D\xE9crivez les mat\xE9riaux dont vous avez besoin \u2014 on transmet ta demande aux quincailleries de ta r\xE9gion. Contrairement \xE0 la recherche d'un entrepreneur, ce service n'est pas gratuit."
+    }
+  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(Lock, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, "Ce service comporte des frais (contrairement \xE0 la mise en relation avec un entrepreneur, qui reste gratuite). Les d\xE9tails te seront communiqu\xE9s avant toute confirmation.")), submitted ? /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 text-center" }, /* @__PURE__ */ React.createElement(CheckCircle2, { size: 40, style: { color: COLORS.green }, className: "mx-auto mb-4" }), /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-xl font-semibold mb-2" }, "Demande envoy\xE9e"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm leading-relaxed" }, "On transmet ta liste aux quincailleries de ta r\xE9gion et on te revient avec des prix.")) : /* @__PURE__ */ React.createElement("div", { className: "space-y-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Liste de mat\xE9riaux souhait\xE9s"), /* @__PURE__ */ React.createElement(
+    "textarea",
+    {
+      value: form.materiaux,
+      onChange: update("materiaux"),
+      rows: 5,
+      placeholder: "Ex. : 20 feuilles de contreplaqu\xE9 4x8, 200 pi\xB2 de bardeaux d'asphalte, 50 pieds de 2x4\u2026",
+      style: { borderColor: COLORS.paperDark },
+      className: inputStyle
+    }
+  )), /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-2 gap-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "R\xE9gion"), /* @__PURE__ */ React.createElement("select", { value: form.region, onChange: update("region"), style: { borderColor: COLORS.paperDark }, className: inputStyle }, /* @__PURE__ */ React.createElement("option", { value: "" }, "S\xE9lectionner\u2026"), REGIONS_QC.map((r) => /* @__PURE__ */ React.createElement("option", { key: r }, r)))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ville"), /* @__PURE__ */ React.createElement("input", { value: form.ville, onChange: update("ville"), style: { borderColor: COLORS.paperDark }, className: inputStyle }))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ton courriel"), /* @__PURE__ */ React.createElement("input", { value: form.courriel, onChange: update("courriel"), type: "email", style: { borderColor: COLORS.paperDark }, className: inputStyle })), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: submitMaterials,
+      disabled: sending,
+      style: { background: COLORS.orange, color: COLORS.navy, fontFamily: "'Poppins', sans-serif", opacity: sending ? 0.7 : 1 },
+      className: "px-6 py-3 rounded-md font-medium text-sm flex items-center gap-2"
+    },
+    sending ? "Envoi en cours\u2026" : "Envoyer ma demande",
+    " ",
+    /* @__PURE__ */ React.createElement(ArrowRight, { size: 16 })
+  ), error && /* @__PURE__ */ React.createElement("p", { style: { color: "#B33A3A" }, className: "text-xs mt-2" }, error)))));
 }
 function FaqView() {
   const faqs = [
@@ -1923,7 +1998,7 @@ function App() {
       },
       "S'inscrire"
     )
-  )), tab === "home" && /* @__PURE__ */ React.createElement(HomeView, { goTo: setTab }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitView, null), tab === "contractors" && /* @__PURE__ */ React.createElement(ContractorsView, null), tab === "architects" && /* @__PURE__ */ React.createElement(ArchitectsView, null), tab === "trust" && /* @__PURE__ */ React.createElement(TrustNetworkView, null), tab === "showcase" && /* @__PURE__ */ React.createElement(ShowcaseView, null), tab === "certification" && /* @__PURE__ */ React.createElement(CertificationView, null), tab === "join" && /* @__PURE__ */ React.createElement(JoinView, { goTo: setTab }), tab === "espacepro" && /* @__PURE__ */ React.createElement(EspaceProView, null), tab === "insurers" && /* @__PURE__ */ React.createElement(InsurersView, null), tab === "clientdash" && /* @__PURE__ */ React.createElement(ClientDashboardView, null), tab === "admin" && /* @__PURE__ */ React.createElement(AdminDashboardView, null), tab === "faq" && /* @__PURE__ */ React.createElement(FaqView, null), tab === "booking" && /* @__PURE__ */ React.createElement(BookingView, null), /* @__PURE__ */ React.createElement("section", { style: { background: COLORS.navy }, className: "px-6 md:px-14 py-10 flex flex-wrap items-center justify-between gap-6" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-lg font-semibold" }, "Une question ? Parlons-en directement."), /* @__PURE__ */ React.createElement("p", { className: "text-white/60 text-sm mt-1" }, "R\xE9serve un appel rapide avec nous, sans engagement.")), /* @__PURE__ */ React.createElement(
+  )), tab === "home" && /* @__PURE__ */ React.createElement(HomeView, { goTo: setTab }), tab === "submit" && /* @__PURE__ */ React.createElement(SubmitView, null), tab === "contractors" && /* @__PURE__ */ React.createElement(ContractorsView, null), tab === "architects" && /* @__PURE__ */ React.createElement(ArchitectsView, null), tab === "trust" && /* @__PURE__ */ React.createElement(TrustNetworkView, null), tab === "showcase" && /* @__PURE__ */ React.createElement(ShowcaseView, null), tab === "certification" && /* @__PURE__ */ React.createElement(CertificationView, null), tab === "join" && /* @__PURE__ */ React.createElement(JoinView, { goTo: setTab }), tab === "espacepro" && /* @__PURE__ */ React.createElement(EspaceProView, null), tab === "insurers" && /* @__PURE__ */ React.createElement(InsurersView, null), tab === "clientdash" && /* @__PURE__ */ React.createElement(ClientDashboardView, null), tab === "admin" && /* @__PURE__ */ React.createElement(AdminDashboardView, null), tab === "faq" && /* @__PURE__ */ React.createElement(FaqView, null), tab === "materials" && /* @__PURE__ */ React.createElement(MaterialsView, null), tab === "booking" && /* @__PURE__ */ React.createElement(BookingView, null), /* @__PURE__ */ React.createElement("section", { style: { background: COLORS.navy }, className: "px-6 md:px-14 py-10 flex flex-wrap items-center justify-between gap-6" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-lg font-semibold" }, "Une question ? Parlons-en directement."), /* @__PURE__ */ React.createElement("p", { className: "text-white/60 text-sm mt-1" }, "R\xE9serve un appel rapide avec nous, sans engagement.")), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => goToAndClose("booking"),
@@ -1931,7 +2006,7 @@ function App() {
       className: "px-6 py-3 rounded-md text-sm font-semibold whitespace-nowrap"
     },
     "R\xE9server un appel"
-  )), /* @__PURE__ */ React.createElement("footer", { style: { background: COLORS.navy, borderTop: "1px solid #ffffff15" }, className: "px-6 md:px-14 py-10" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-5xl mx-auto flex flex-wrap justify-between gap-8" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Logo, { light: true, size: 30 }), /* @__PURE__ */ React.createElement("p", { className: "text-white/50 text-xs mt-3 max-w-xs" }, "La plateforme de confiance pour vos projets de r\xE9novation et construction, partout au Qu\xE9bec.")), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-x-10 gap-y-3 text-xs", style: { fontFamily: "'Poppins', sans-serif" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("contractors"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des entrepreneurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("architects"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des architectes"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("showcase"), className: "text-white/70 hover:text-white" }, "R\xE9alisations"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("insurers"), className: "text-white/70 hover:text-white" }, "Assureurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("booking"), className: "text-white/70 hover:text-white" }, "R\xE9server un appel"))), /* @__PURE__ */ React.createElement("div", { style: { color: "#ffffff40", fontFamily: "'IBM Plex Mono', monospace" }, className: "text-xs text-center mt-8" }, "R\xE9no-Confiance \u2014 Qu\xE9bec")));
+  )), /* @__PURE__ */ React.createElement("footer", { style: { background: COLORS.navy, borderTop: "1px solid #ffffff15" }, className: "px-6 md:px-14 py-10" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-5xl mx-auto flex flex-wrap justify-between gap-8" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Logo, { light: true, size: 30 }), /* @__PURE__ */ React.createElement("p", { className: "text-white/50 text-xs mt-3 max-w-xs" }, "La plateforme de confiance pour vos projets de r\xE9novation et construction, partout au Qu\xE9bec.")), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-x-10 gap-y-3 text-xs", style: { fontFamily: "'Poppins', sans-serif" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("contractors"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des entrepreneurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("architects"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des architectes"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("showcase"), className: "text-white/70 hover:text-white" }, "R\xE9alisations"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("insurers"), className: "text-white/70 hover:text-white" }, "Assureurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("booking"), className: "text-white/70 hover:text-white" }, "R\xE9server un appel"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("materials"), className: "text-white/70 hover:text-white" }, "Estimation de mat\xE9riaux"))), /* @__PURE__ */ React.createElement("div", { style: { color: "#ffffff40", fontFamily: "'IBM Plex Mono', monospace" }, className: "text-xs text-center mt-8" }, "R\xE9no-Confiance \u2014 Qu\xE9bec")));
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(App));
