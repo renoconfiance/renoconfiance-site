@@ -1015,9 +1015,9 @@ const PLAN_REQUESTS = [
   }
 ];
 const CREDIT_PACKS = [
-  { name: "D\xE9part", credits: 20, price: "60 $", note: "Id\xE9al pour tester la plateforme" },
-  { name: "Pro", credits: 60, price: "150 $", note: "17 % d'\xE9conomie vs D\xE9part", featured: true },
-  { name: "Expert", credits: 150, price: "350 $", note: "22 % d'\xE9conomie vs D\xE9part" }
+  { name: "D\xE9part", credits: 20, price: "60 $", note: "Id\xE9al pour tester la plateforme", bonus: 5 },
+  { name: "Pro", credits: 60, price: "150 $", note: "17 % d'\xE9conomie vs D\xE9part", featured: true, bonus: 10 },
+  { name: "Expert", credits: 150, price: "350 $", note: "22 % d'\xE9conomie vs D\xE9part", bonus: 15 }
 ];
 const REGIONS_QC = [
   "Abitibi-T\xE9miscamingue",
@@ -1117,7 +1117,7 @@ function JoinView({ goTo }) {
       title: "Devenir partenaire certifi\xE9",
       subtitle: "Entrepreneur ou architecte : d\xE9pose ta candidature. Chaque dossier est \xE9valu\xE9 personnellement."
     }
-  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(ShieldCheck, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, /* @__PURE__ */ React.createElement("strong", null, "Offre de lancement \u2014 Membres fondateurs :"), " les premiers professionnels qualifi\xE9s re\xE7oivent 15 cr\xE9dits gratuits pour commencer \xE0 miser sur des projets, sans premier achat requis.")), submitted ? /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(ShieldCheck, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, /* @__PURE__ */ React.createElement("strong", null, "Offre de lancement \u2014 Membres fondateurs :"), " les premiers professionnels qualifi\xE9s re\xE7oivent des cr\xE9dits bonus \xE0 l'achat de leur premier forfait \u2014 +5 sur D\xE9part, +10 sur Pro, +15 sur Expert.")), submitted ? /* @__PURE__ */ React.createElement(
     "div",
     {
       style: { background: COLORS.card, borderColor: COLORS.paperDark },
@@ -1360,7 +1360,17 @@ function EspaceProView() {
       },
       pack.price
     ),
-    /* @__PURE__ */ React.createElement("div", { style: { color: pack.featured ? "#ffffffaa" : COLORS.steel }, className: "text-sm mb-4" }, pack.credits, " cr\xE9dits"),
+    /* @__PURE__ */ React.createElement("div", { style: { color: pack.featured ? "#ffffffaa" : COLORS.steel }, className: "text-sm mb-1" }, pack.credits, " cr\xE9dits"),
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: { background: "#F4E3C5", color: "#8A6116" },
+        className: "inline-block text-[11px] font-medium px-2 py-0.5 rounded-full mb-4"
+      },
+      "+",
+      pack.bonus,
+      " cr\xE9dits bonus de lancement"
+    ),
     /* @__PURE__ */ React.createElement("p", { style: { color: pack.featured ? "#ffffff90" : COLORS.steel }, className: "text-xs leading-relaxed mb-4" }, pack.note),
     /* @__PURE__ */ React.createElement(
       "a",
@@ -1505,12 +1515,9 @@ function AdminDashboardView() {
     if (error) setAuthError(error.message);
     setAuthLoading(false);
   };
-  const FOUNDING_MEMBER_CREDITS = 15;
   const setProStatut = async (id, statut) => {
     setBusyId(id);
-    const update = { statut };
-    if (statut === "qualifie") update.credits = FOUNDING_MEMBER_CREDITS;
-    await supabase.from("professionals").update(update).eq("id", id);
+    await supabase.from("professionals").update({ statut }).eq("id", id);
     loadData();
     setBusyId(null);
   };
@@ -1723,21 +1730,33 @@ function BookingView() {
     }
   ))));
 }
+const MATERIALS_PRICING = [
+  { value: "petit", label: "Petit projet (moins de 10 000 $ de mat\xE9riaux)", price: 12.5 },
+  { value: "moyen", label: "Projet moyen (10 000 $ \xE0 30 000 $ de mat\xE9riaux)", price: 25 },
+  { value: "grand", label: "Grand projet (30 000 $ et plus de mat\xE9riaux)", price: 50 }
+];
 function MaterialsView() {
-  const [form, setForm] = useState({ materiaux: "", region: "", ville: "", courriel: "" });
+  const [form, setForm] = useState({ materiaux: "", region: "", ville: "", courriel: "", ampleur: "" });
+  const [planFile, setPlanFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
   const inputStyle = "w-full border rounded-sm px-3.5 py-2.5 text-sm outline-none focus:ring-2 transition";
+  const selectedTier = MATERIALS_PRICING.find((t) => t.value === form.ampleur);
   const submitMaterials = async () => {
     setError("");
     setSending(true);
     try {
+      const data = new FormData();
+      data.append("formulaire", "Estimation de mat\xE9riaux");
+      Object.entries(form).forEach(([k, v]) => data.append(k, v));
+      if (selectedTier) data.append("tarif", `${selectedTier.price} $`);
+      if (planFile) data.append("plans", planFile);
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({ formulaire: "Estimation de mat\xE9riaux", ...form })
+        headers: { Accept: "application/json" },
+        body: data
       });
       if (!res.ok) throw new Error("Envoi refus\xE9");
       setSubmitted(true);
@@ -1752,9 +1771,9 @@ function MaterialsView() {
     {
       eyebrow: "Estimation de mat\xE9riaux",
       title: "Faites \xE9valuer le prix de vos mat\xE9riaux",
-      subtitle: "D\xE9crivez les mat\xE9riaux dont vous avez besoin \u2014 on transmet ta demande aux quincailleries de ta r\xE9gion. Contrairement \xE0 la recherche d'un entrepreneur, ce service n'est pas gratuit."
+      subtitle: "D\xE9crivez ou envoie tes plans \u2014 on transmet ta demande aux quincailleries de ta r\xE9gion. Contrairement \xE0 la recherche d'un entrepreneur, ce service n'est pas gratuit."
     }
-  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(Lock, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, "Ce service comporte des frais (contrairement \xE0 la mise en relation avec un entrepreneur, qui reste gratuite). Les d\xE9tails te seront communiqu\xE9s avant toute confirmation.")), submitted ? /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 text-center" }, /* @__PURE__ */ React.createElement(CheckCircle2, { size: 40, style: { color: COLORS.green }, className: "mx-auto mb-4" }), /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-xl font-semibold mb-2" }, "Demande envoy\xE9e"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm leading-relaxed" }, "On transmet ta liste aux quincailleries de ta r\xE9gion et on te revient avec des prix.")) : /* @__PURE__ */ React.createElement("div", { className: "space-y-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Liste de mat\xE9riaux souhait\xE9s"), /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", borderColor: "#D9B45F" }, className: "border rounded-sm px-4 py-3 mb-6 flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(Lock, { size: 15, style: { color: "#8A6116" }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("p", { style: { color: "#8A6116" }, className: "text-xs leading-relaxed" }, "Ce service comporte des frais (contrairement \xE0 la mise en relation avec un entrepreneur, qui reste gratuite). Le tarif d\xE9pend de l'ampleur du projet, indiqu\xE9 ci-dessous.")), submitted ? /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 text-center" }, /* @__PURE__ */ React.createElement(CheckCircle2, { size: 40, style: { color: COLORS.green }, className: "mx-auto mb-4" }), /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-xl font-semibold mb-2" }, "Demande envoy\xE9e"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm leading-relaxed" }, "On transmet ta liste (et tes plans, si fournis) aux quincailleries de ta r\xE9gion et on te revient avec des prix.")) : /* @__PURE__ */ React.createElement("div", { className: "space-y-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ampleur du projet"), /* @__PURE__ */ React.createElement("select", { value: form.ampleur, onChange: update("ampleur"), style: { borderColor: COLORS.paperDark }, className: inputStyle }, /* @__PURE__ */ React.createElement("option", { value: "" }, "S\xE9lectionner\u2026"), MATERIALS_PRICING.map((t) => /* @__PURE__ */ React.createElement("option", { key: t.value, value: t.value }, t.label, " \u2014 ", t.price, " $"))), selectedTier && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs mt-1.5" }, "Tarif applicable : ", /* @__PURE__ */ React.createElement("strong", { style: { color: COLORS.navy } }, selectedTier.price, " $"))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Liste de mat\xE9riaux souhait\xE9s"), /* @__PURE__ */ React.createElement(
     "textarea",
     {
       value: form.materiaux,
@@ -1764,7 +1783,16 @@ function MaterialsView() {
       style: { borderColor: COLORS.paperDark },
       className: inputStyle
     }
-  )), /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-2 gap-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "R\xE9gion"), /* @__PURE__ */ React.createElement("select", { value: form.region, onChange: update("region"), style: { borderColor: COLORS.paperDark }, className: inputStyle }, /* @__PURE__ */ React.createElement("option", { value: "" }, "S\xE9lectionner\u2026"), REGIONS_QC.map((r) => /* @__PURE__ */ React.createElement("option", { key: r }, r)))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ville"), /* @__PURE__ */ React.createElement("input", { value: form.ville, onChange: update("ville"), style: { borderColor: COLORS.paperDark }, className: inputStyle }))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ton courriel"), /* @__PURE__ */ React.createElement("input", { value: form.courriel, onChange: update("courriel"), type: "email", style: { borderColor: COLORS.paperDark }, className: inputStyle })), /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Plans du projet (optionnel)"), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "file",
+      accept: ".pdf,.jpg,.jpeg,.png,.dwg",
+      onChange: (e) => setPlanFile(e.target.files?.[0] || null),
+      style: { borderColor: COLORS.paperDark },
+      className: inputStyle + " file:mr-3 file:py-1 file:px-2 file:rounded-sm file:border-0 file:text-xs"
+    }
+  ), planFile && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs mt-1" }, planFile.name)), /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-2 gap-5" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "R\xE9gion"), /* @__PURE__ */ React.createElement("select", { value: form.region, onChange: update("region"), style: { borderColor: COLORS.paperDark }, className: inputStyle }, /* @__PURE__ */ React.createElement("option", { value: "" }, "S\xE9lectionner\u2026"), REGIONS_QC.map((r) => /* @__PURE__ */ React.createElement("option", { key: r }, r)))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ville"), /* @__PURE__ */ React.createElement("input", { value: form.ville, onChange: update("ville"), style: { borderColor: COLORS.paperDark }, className: inputStyle }))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Ton courriel"), /* @__PURE__ */ React.createElement("input", { value: form.courriel, onChange: update("courriel"), type: "email", style: { borderColor: COLORS.paperDark }, className: inputStyle })), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: submitMaterials,
@@ -2029,7 +2057,7 @@ function App() {
       className: "px-6 py-3 rounded-md text-sm font-semibold whitespace-nowrap"
     },
     "R\xE9server un appel"
-  )), /* @__PURE__ */ React.createElement("footer", { style: { background: COLORS.navy, borderTop: "1px solid #ffffff15" }, className: "px-6 md:px-14 py-10" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-5xl mx-auto flex flex-wrap justify-between gap-8" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Logo, { light: true, size: 30 }), /* @__PURE__ */ React.createElement("p", { className: "text-white/50 text-xs mt-3 max-w-xs" }, "La plateforme de confiance pour vos projets de r\xE9novation et construction, partout au Qu\xE9bec.")), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-x-10 gap-y-3 text-xs", style: { fontFamily: "'Poppins', sans-serif" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("contractors"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des entrepreneurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("architects"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des architectes"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("showcase"), className: "text-white/70 hover:text-white" }, "R\xE9alisations"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("insurers"), className: "text-white/70 hover:text-white" }, "Assureurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("booking"), className: "text-white/70 hover:text-white" }, "R\xE9server un appel"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("materials"), className: "text-white/70 hover:text-white" }, "Estimation de mat\xE9riaux"))), /* @__PURE__ */ React.createElement("div", { style: { color: "#ffffff40", fontFamily: "'IBM Plex Mono', monospace" }, className: "text-xs text-center mt-8 flex items-center justify-center gap-3" }, /* @__PURE__ */ React.createElement("span", null, "R\xE9no-Confiance \u2014 Qu\xE9bec"), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("privacy"), className: "underline hover:text-white/70" }, "Politique de confidentialit\xE9"), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("terms"), className: "underline hover:text-white/70" }, "Conditions d'utilisation"))));
+  )), /* @__PURE__ */ React.createElement("footer", { style: { background: COLORS.navy, borderTop: "1px solid #ffffff15" }, className: "px-6 md:px-14 py-10" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-5xl mx-auto flex flex-wrap justify-between gap-8" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Logo, { light: true, size: 30 }), /* @__PURE__ */ React.createElement("p", { className: "text-white/50 text-xs mt-3 max-w-xs" }, "La plateforme de confiance pour vos projets de r\xE9novation et construction, partout au Qu\xE9bec.")), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-x-10 gap-y-3 text-xs", style: { fontFamily: "'Poppins', sans-serif" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("contractors"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des entrepreneurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("architects"), className: "text-white/70 hover:text-white" }, "R\xE9pertoire des architectes"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("showcase"), className: "text-white/70 hover:text-white" }, "R\xE9alisations"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("insurers"), className: "text-white/70 hover:text-white" }, "Assureurs"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("booking"), className: "text-white/70 hover:text-white" }, "R\xE9server un appel"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("materials"), className: "text-white/70 hover:text-white" }, "Estimation de mat\xE9riaux"), /* @__PURE__ */ React.createElement("a", { href: "/blog/", className: "text-white/70 hover:text-white" }, "Blogue"))), /* @__PURE__ */ React.createElement("div", { style: { color: "#ffffff40", fontFamily: "'IBM Plex Mono', monospace" }, className: "text-xs text-center mt-8 flex items-center justify-center gap-3" }, /* @__PURE__ */ React.createElement("span", null, "R\xE9no-Confiance \u2014 Qu\xE9bec"), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("privacy"), className: "underline hover:text-white/70" }, "Politique de confidentialit\xE9"), /* @__PURE__ */ React.createElement("span", null, "\xB7"), /* @__PURE__ */ React.createElement("button", { onClick: () => goToAndClose("terms"), className: "underline hover:text-white/70" }, "Conditions d'utilisation"))));
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(App));
