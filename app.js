@@ -31,7 +31,8 @@ import {
   Inbox,
   Plus,
   Menu,
-  X
+  X,
+  BarChart3
 } from "https://esm.sh/lucide-react@0.383.0?deps=react@18.3.1";
 const FONT_IMPORT = `
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -1557,6 +1558,32 @@ function AdminDashboardView() {
   const pending = pros.filter((p) => p.statut === "en_attente").length;
   const pendingProjects = projects.filter((p) => p.statut === "en_attente").length;
   const published = projects.filter((p) => p.statut === "publie").length;
+  const qualifiedCount = pros.filter((p) => p.statut === "qualifie").length;
+  const disqualifiedCount = pros.filter((p) => p.statut === "disqualifie").length;
+  const decidedCount = qualifiedCount + disqualifiedCount;
+  const qualificationRate = decidedCount ? Math.round(qualifiedCount / decidedCount * 100) : 0;
+  const now = /* @__PURE__ */ new Date();
+  const isThisMonth = (dateStr) => {
+    if (!dateStr) return false;
+    const d = new Date(dateStr);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  };
+  const newProsThisMonth = pros.filter((p) => isThisMonth(p.created_at)).length;
+  const newProjectsThisMonth = projects.filter((p) => isThisMonth(p.created_at)).length;
+  const totalCreditsHeld = pros.reduce((sum, p) => sum + (p.credits || 0), 0);
+  const monthLabels = [];
+  const monthCounts = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    monthLabels.push(d.toLocaleDateString("fr-CA", { month: "short" }));
+    const count = pros.filter((p) => {
+      if (!p.created_at) return false;
+      const pd = new Date(p.created_at);
+      return pd.getMonth() === d.getMonth() && pd.getFullYear() === d.getFullYear();
+    }).length;
+    monthCounts.push(count);
+  }
+  const maxMonthCount = Math.max(1, ...monthCounts);
   return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(SectionBand, { eyebrow: "Acc\xE8s restreint", title: "Administration", subtitle: "Qualifie les professionnels et g\xE8re les projets soumis." }), /* @__PURE__ */ React.createElement("div", { className: "px-6 md:px-14 py-14", style: { background: COLORS.paper } }, /* @__PURE__ */ React.createElement("div", { className: "max-w-6xl mx-auto" }, !session && /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-sm p-8 max-w-md mx-auto" }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-lg font-semibold mb-4" }, "Connexion administrateur"), /* @__PURE__ */ React.createElement("div", { className: "space-y-3" }, /* @__PURE__ */ React.createElement(
     "input",
     {
@@ -1592,6 +1619,7 @@ function AdminDashboardView() {
       onSignOut: () => supabase.auth.signOut(),
       items: [
         { icon: LayoutDashboard, label: "Tableau de bord", active: adminTab === "overview", onClick: () => setAdminTab("overview") },
+        { icon: BarChart3, label: "Indicateurs", active: adminTab === "kpi", onClick: () => setAdminTab("kpi") },
         { icon: ClipboardCheck, label: "Suivi (CRM)", active: adminTab === "crm", onClick: () => setAdminTab("crm") }
       ]
     }
@@ -1622,7 +1650,17 @@ function AdminDashboardView() {
       className: "px-3 py-1.5 rounded-md text-xs font-medium"
     },
     "Publier"
-  ))))), adminTab === "crm" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-lg font-semibold mb-1" }, "Suivi des professionnels"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm mb-4" }, "Ajoute une note et une date de prochain suivi pour chaque professionnel."), /* @__PURE__ */ React.createElement("div", { className: "space-y-3 mb-12" }, pros.map((p) => {
+  ))))), adminTab === "kpi" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-4 gap-4 mb-8" }, /* @__PURE__ */ React.createElement(StatCard, { value: newProsThisMonth, label: "Nouvelles candidatures ce mois" }), /* @__PURE__ */ React.createElement(StatCard, { value: `${qualificationRate} %`, label: "Taux de qualification" }), /* @__PURE__ */ React.createElement(StatCard, { value: newProjectsThisMonth, label: "Nouveaux projets ce mois" }), /* @__PURE__ */ React.createElement(StatCard, { value: totalCreditsHeld, label: "Cr\xE9dits en circulation" })), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Pipeline de qualification"), /* @__PURE__ */ React.createElement("div", { className: "flex gap-2 mb-8" }, /* @__PURE__ */ React.createElement("div", { style: { background: "#F4E3C5", color: "#8A6116", flex: Math.max(pending, 1) }, className: "rounded-lg px-3 py-2.5" }, /* @__PURE__ */ React.createElement("div", { className: "text-[11px]" }, "En attente"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif" }, className: "text-lg font-semibold" }, pending)), /* @__PURE__ */ React.createElement("div", { style: { background: "#DCEEE3", color: "#1F6B45", flex: Math.max(qualifiedCount, 1) }, className: "rounded-lg px-3 py-2.5" }, /* @__PURE__ */ React.createElement("div", { className: "text-[11px]" }, "Qualifi\xE9s"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif" }, className: "text-lg font-semibold" }, qualifiedCount)), /* @__PURE__ */ React.createElement("div", { style: { background: "#F4D4D4", color: "#8A2020", flex: Math.max(disqualifiedCount, 1) }, className: "rounded-lg px-3 py-2.5" }, /* @__PURE__ */ React.createElement("div", { className: "text-[11px]" }, "Disqualifi\xE9s"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif" }, className: "text-lg font-semibold" }, disqualifiedCount))), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Candidatures par mois"), /* @__PURE__ */ React.createElement("div", { className: "flex items-end gap-3", style: { height: 140 } }, monthCounts.map((count, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "flex-1 flex flex-col items-center justify-end h-full" }, /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.navy, fontFamily: "'Poppins', sans-serif" }, className: "text-xs font-medium mb-1" }, count), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        background: COLORS.orange,
+        height: `${Math.max(6, count / maxMonthCount * 100)}%`,
+        width: "100%",
+        borderRadius: "4px 4px 0 0"
+      }
+    }
+  ), /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.steel }, className: "text-[11px] mt-1.5 capitalize" }, monthLabels[i])))), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-[11px] mt-8" }, "Ces indicateurs viennent directement de ta base de donn\xE9es \u2014 aucune donn\xE9e externe. Le revenu n'est pas encore suivi automatiquement puisque les achats de cr\xE9dits ne sont pas enregistr\xE9s dans une table d\xE9di\xE9e.")), adminTab === "crm" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-lg font-semibold mb-1" }, "Suivi des professionnels"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm mb-4" }, "Ajoute une note et une date de prochain suivi pour chaque professionnel."), /* @__PURE__ */ React.createElement("div", { className: "space-y-3 mb-12" }, pros.map((p) => {
     const key = `professionals-${p.id}`;
     const dirty = !!crmDrafts[key];
     return /* @__PURE__ */ React.createElement("div", { key: p.id, style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-4" }, /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap items-center justify-between gap-2 mb-2" }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold" }, p.entreprise, " ", /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontWeight: 400 } }, "\xB7 ", p.courriel)), /* @__PURE__ */ React.createElement(
