@@ -497,6 +497,18 @@ function SubmitView() {
     /* @__PURE__ */ React.createElement("option", null, "Fondation"),
     /* @__PURE__ */ React.createElement("option", null, "Agrandissement"),
     /* @__PURE__ */ React.createElement("option", null, "\xC9lectricit\xE9"),
+    /* @__PURE__ */ React.createElement("option", null, "Plomberie"),
+    /* @__PURE__ */ React.createElement("option", null, "Plancher \xE9poxy"),
+    /* @__PURE__ */ React.createElement("option", null, "Rev\xEAtement de plancher"),
+    /* @__PURE__ */ React.createElement("option", null, "Peinture"),
+    /* @__PURE__ */ React.createElement("option", null, "Rev\xEAtement ext\xE9rieur"),
+    /* @__PURE__ */ React.createElement("option", null, "Portes et fen\xEAtres"),
+    /* @__PURE__ */ React.createElement("option", null, "Isolation"),
+    /* @__PURE__ */ React.createElement("option", null, "Chauffage et climatisation"),
+    /* @__PURE__ */ React.createElement("option", null, "Am\xE9nagement paysager"),
+    /* @__PURE__ */ React.createElement("option", null, "Terrasse ou patio"),
+    /* @__PURE__ */ React.createElement("option", null, "R\xE9novation sous-sol"),
+    /* @__PURE__ */ React.createElement("option", null, "Gypse et pl\xE2tre"),
     /* @__PURE__ */ React.createElement("option", null, "Autre")
   )), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("label", { style: { color: COLORS.navy }, className: "text-sm font-medium block mb-1.5" }, "Description du projet"), /* @__PURE__ */ React.createElement(
     "textarea",
@@ -2097,7 +2109,7 @@ function App() {
     {
       onClick: () => goToAndClose("guide"),
       style: { background: COLORS.navy, color: "#fff", fontFamily: "'Poppins', sans-serif" },
-      className: "px-4 py-2 rounded-md text-sm font-medium flex items-center gap-1.5"
+      className: "px-4 py-2 rounded-md text-sm font-medium flex items-center gap-1.5 cursor-pointer"
     },
     /* @__PURE__ */ React.createElement(FileText, { size: 14, style: { color: COLORS.orange } }),
     " Guide : r\xE9ussir ses r\xE9nos"
@@ -2172,7 +2184,7 @@ function App() {
       {
         onClick: () => goToAndClose("guide"),
         style: { background: COLORS.navy, color: "#fff", fontFamily: "'Poppins', sans-serif" },
-        className: "w-full px-4 py-2.5 rounded-md text-sm font-medium flex items-center justify-center gap-1.5 mb-4"
+        className: "w-full px-4 py-2.5 rounded-md text-sm font-medium flex items-center justify-center gap-1.5 mb-4 cursor-pointer"
       },
       /* @__PURE__ */ React.createElement(FileText, { size: 14, style: { color: COLORS.orange } }),
       " Guide : r\xE9ussir ses r\xE9nos"
