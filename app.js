@@ -1975,7 +1975,7 @@ function GuideView() {
     "Comment g\xE9rer le chantier, les impr\xE9vus et les changements",
     "L'inspection finale, les garanties et vos recours",
     "Une checklist r\xE9capitulative compl\xE8te, pr\xEAte \xE0 imprimer"
-  ].map((item) => /* @__PURE__ */ React.createElement("li", { key: item, className: "flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(CheckCircle2, { size: 16, style: { color: COLORS.green }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel }, className: "text-sm" }, item))))), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-6 h-fit" }, /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.navy }, className: "rounded-md aspect-[3/4] mb-5 flex items-center justify-center" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 70 })), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-3xl font-bold mb-1" }, "15 $"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs mb-5" }, "Format PDF \xB7 17 pages \xB7 t\xE9l\xE9chargement imm\xE9diat"), /* @__PURE__ */ React.createElement(
+  ].map((item) => /* @__PURE__ */ React.createElement("li", { key: item, className: "flex items-start gap-2.5" }, /* @__PURE__ */ React.createElement(CheckCircle2, { size: 16, style: { color: COLORS.green }, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel }, className: "text-sm" }, item))))), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-6 h-fit" }, /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.navy }, className: "rounded-md aspect-[3/4] mb-5 flex flex-col items-center justify-center px-5 text-center gap-4" }, /* @__PURE__ */ React.createElement(BrandMark, { size: 64 }), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: "#fff" }, className: "text-base font-semibold leading-snug" }, "Le guide complet pour des r\xE9nos r\xE9ussies"), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.orange }, className: "h-1 w-10 rounded-full" })), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-3xl font-bold mb-1" }, "15 $"), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs mb-5" }, "Format PDF \xB7 17 pages \xB7 t\xE9l\xE9chargement imm\xE9diat"), /* @__PURE__ */ React.createElement(
     "a",
     {
       href: GUIDE_STRIPE_LINK,
@@ -2095,6 +2095,15 @@ function App() {
   return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'IBM Plex Sans', sans-serif" }, className: "w-full min-h-full" }, /* @__PURE__ */ React.createElement("style", null, FONT_IMPORT), /* @__PURE__ */ React.createElement("header", { className: "px-6 md:px-14 py-4 flex items-center justify-between gap-4 border-b relative", style: { borderColor: COLORS.paperDark } }, /* @__PURE__ */ React.createElement("div", { onClick: () => goToAndClose("home"), className: "cursor-pointer" }, /* @__PURE__ */ React.createElement(Logo, null)), /* @__PURE__ */ React.createElement("nav", { className: "hidden md:flex flex-wrap" }, navLinks.map((t) => /* @__PURE__ */ React.createElement(NavTab, { key: t.id, label: t.label, active: tab === t.id, onClick: () => goToAndClose(t.id) }))), /* @__PURE__ */ React.createElement("div", { className: "hidden md:flex items-center gap-3 relative" }, /* @__PURE__ */ React.createElement(
     "button",
     {
+      onClick: () => goToAndClose("guide"),
+      style: { background: COLORS.navy, color: "#fff", fontFamily: "'Poppins', sans-serif" },
+      className: "px-4 py-2 rounded-md text-sm font-medium flex items-center gap-1.5"
+    },
+    /* @__PURE__ */ React.createElement(FileText, { size: 14, style: { color: COLORS.orange } }),
+    " Guide : r\xE9ussir ses r\xE9nos"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
       onClick: () => setLoginMenuOpen((o) => !o),
       style: { borderColor: COLORS.paperDark, color: COLORS.navy, fontFamily: "'Poppins', sans-serif" },
       className: "px-4 py-2 rounded-md text-sm font-medium border"
@@ -2158,6 +2167,16 @@ function App() {
       style: { background: "#fff", borderColor: COLORS.paperDark, top: "100%" },
       className: "md:hidden absolute left-0 right-0 border-t shadow-lg z-20 px-6 py-4"
     },
+    /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => goToAndClose("guide"),
+        style: { background: COLORS.navy, color: "#fff", fontFamily: "'Poppins', sans-serif" },
+        className: "w-full px-4 py-2.5 rounded-md text-sm font-medium flex items-center justify-center gap-1.5 mb-4"
+      },
+      /* @__PURE__ */ React.createElement(FileText, { size: 14, style: { color: COLORS.orange } }),
+      " Guide : r\xE9ussir ses r\xE9nos"
+    ),
     /* @__PURE__ */ React.createElement("nav", { className: "flex flex-col gap-1 mb-4" }, navLinks.map((t) => /* @__PURE__ */ React.createElement(
       "button",
       {
