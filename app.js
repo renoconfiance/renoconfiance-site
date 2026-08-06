@@ -1525,6 +1525,7 @@ function AdminDashboardView() {
   const [projects, setProjects] = useState([]);
   const [busyId, setBusyId] = useState(null);
   const [adminTab, setAdminTab] = useState("overview");
+  const [expandedProId, setExpandedProId] = useState(null);
   const [crmDrafts, setCrmDrafts] = useState({});
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -1653,25 +1654,36 @@ function AdminDashboardView() {
         { icon: ClipboardCheck, label: "Suivi (CRM)", active: adminTab === "crm", onClick: () => setAdminTab("crm") }
       ]
     }
-  ), /* @__PURE__ */ React.createElement("div", { className: "min-w-0" }, adminTab === "overview" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-4 gap-4 mb-8" }, /* @__PURE__ */ React.createElement(StatCard, { value: pendingProjects, label: "Projets en attente" }), /* @__PURE__ */ React.createElement(StatCard, { value: pending, label: "Entrepreneurs en attente" }), /* @__PURE__ */ React.createElement(StatCard, { value: published, label: "Projets publi\xE9s" }), /* @__PURE__ */ React.createElement(StatCard, { value: pros.length, label: "Professionnels au total" })), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Professionnels \xE0 qualifier"), /* @__PURE__ */ React.createElement("div", { className: "space-y-3 mb-10" }, pros.filter((p) => p.statut === "en_attente").length === 0 && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "Aucune candidature en attente."), pros.filter((p) => p.statut === "en_attente").map((p) => /* @__PURE__ */ React.createElement("div", { key: p.id, style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-4 flex flex-wrap items-center justify-between gap-3" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold" }, p.entreprise, " ", /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontWeight: 400 } }, "\xB7 ", p.profession)), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs" }, p.specialite, " \xB7 ", p.ville, ", ", p.region, " \xB7 ", p.courriel)), /* @__PURE__ */ React.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      disabled: busyId === p.id,
-      onClick: () => setProStatut(p.id, "qualifie"),
-      style: { background: COLORS.green, color: "#fff", fontFamily: "'Poppins', sans-serif" },
-      className: "px-3 py-1.5 rounded-md text-xs font-medium"
-    },
-    "Qualifier"
-  ), /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      disabled: busyId === p.id,
-      onClick: () => setProStatut(p.id, "disqualifie"),
-      style: { background: "#B33A3A", color: "#fff", fontFamily: "'Poppins', sans-serif" },
-      className: "px-3 py-1.5 rounded-md text-xs font-medium"
-    },
-    "Disqualifier"
-  ))))), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Projets r\xE9cents"), /* @__PURE__ */ React.createElement("div", { className: "space-y-3" }, projects.slice(0, 8).map((p) => /* @__PURE__ */ React.createElement("div", { key: p.id, style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-4 flex flex-wrap items-center justify-between gap-3" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold" }, p.type), /* @__PURE__ */ React.createElement(StatusTag, { statut: p.statut })), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs" }, p.ville, ", ", p.region)), p.statut === "en_attente" && /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { className: "min-w-0" }, adminTab === "overview" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-4 gap-4 mb-8" }, /* @__PURE__ */ React.createElement(StatCard, { value: pendingProjects, label: "Projets en attente" }), /* @__PURE__ */ React.createElement(StatCard, { value: pending, label: "Entrepreneurs en attente" }), /* @__PURE__ */ React.createElement(StatCard, { value: published, label: "Projets publi\xE9s" }), /* @__PURE__ */ React.createElement(StatCard, { value: pros.length, label: "Professionnels au total" })), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Professionnels \xE0 qualifier"), /* @__PURE__ */ React.createElement("div", { className: "space-y-3 mb-10" }, pros.filter((p) => p.statut === "en_attente").length === 0 && /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-sm" }, "Aucune candidature en attente."), pros.filter((p) => p.statut === "en_attente").map((p) => {
+    const isOpen = expandedProId === p.id;
+    return /* @__PURE__ */ React.createElement("div", { key: p.id, style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-4" }, /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap items-center justify-between gap-3" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold" }, p.entreprise, " ", /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontWeight: 400 } }, "\xB7 ", p.profession)), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs" }, p.specialite, " \xB7 ", p.ville, ", ", p.region)), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setExpandedProId(isOpen ? null : p.id),
+        style: { borderColor: COLORS.paperDark, color: COLORS.navy, fontFamily: "'Poppins', sans-serif" },
+        className: "px-3 py-1.5 rounded-md text-xs font-medium border"
+      },
+      isOpen ? "Fermer" : "Voir le profil complet"
+    )), isOpen && /* @__PURE__ */ React.createElement("div", { className: "mt-4 pt-4 border-t", style: { borderColor: COLORS.paperDark } }, /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-2 gap-x-6 gap-y-2 mb-5 text-sm" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Entreprise : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.entreprise || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Personne-contact : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.contact || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Courriel : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.courriel || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "T\xE9l\xE9phone : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.telephone || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Profession : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.profession || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Sp\xE9cialit\xE9 : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.specialite || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "R\xE9gion : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.region || "\u2014")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Ville : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.ville || "\u2014")), /* @__PURE__ */ React.createElement("div", { className: "sm:col-span-2" }, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel } }, "Num\xE9ro RBQ / OAQ : "), /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.navy } }, p.numero_rbq_oaq || "\u2014"))), /* @__PURE__ */ React.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        disabled: busyId === p.id,
+        onClick: () => setProStatut(p.id, "qualifie"),
+        style: { background: COLORS.green, color: "#fff", fontFamily: "'Poppins', sans-serif" },
+        className: "px-3 py-1.5 rounded-md text-xs font-medium"
+      },
+      "Qualifier"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        disabled: busyId === p.id,
+        onClick: () => setProStatut(p.id, "disqualifie"),
+        style: { background: "#B33A3A", color: "#fff", fontFamily: "'Poppins', sans-serif" },
+        className: "px-3 py-1.5 rounded-md text-xs font-medium"
+      },
+      "Disqualifier"
+    ))));
+  })), /* @__PURE__ */ React.createElement("p", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold mb-3" }, "Projets r\xE9cents"), /* @__PURE__ */ React.createElement("div", { className: "space-y-3" }, projects.slice(0, 8).map((p) => /* @__PURE__ */ React.createElement("div", { key: p.id, style: { background: COLORS.card, borderColor: COLORS.paperDark }, className: "border rounded-lg p-4 flex flex-wrap items-center justify-between gap-3" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "'Poppins', sans-serif", color: COLORS.navy }, className: "text-sm font-semibold" }, p.type), /* @__PURE__ */ React.createElement(StatusTag, { statut: p.statut })), /* @__PURE__ */ React.createElement("p", { style: { color: COLORS.steel }, className: "text-xs" }, p.ville, ", ", p.region)), p.statut === "en_attente" && /* @__PURE__ */ React.createElement(
     "button",
     {
       disabled: busyId === p.id,
